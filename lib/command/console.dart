@@ -26,26 +26,57 @@ class Console extends StatelessWidget {
                 child: Container(
                   alignment: Alignment.bottomLeft,
                   margin: const EdgeInsets.all(20),
-                  child: Text(
-                    state.text,
-                    style: TextStyle(fontFamily: 'Roboto Mono'),
-                  ),
+                  child: state.richtext,
                 ),
               );
             },
           ),
           Container(
             alignment: Alignment.bottomRight,
-            margin: const EdgeInsets.all(20),
-            child: IconButton(
-              onPressed: () => BlocProvider.of<ConsoleCubit>(context).clear(),
-              icon: Icon(FluentIcons.delete),
-              iconButtonMode: IconButtonMode.large,
-              //label: Text("Konsolenausgabe leeren"),
+            margin: const EdgeInsets.all(30),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.end,
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                IconButton(
+                  onPressed: () => _scrollDown(),
+                  icon: Icon(FluentIcons.chevron_down_end),
+                  iconButtonMode: IconButtonMode.large,
+                ),
+                IconButton(
+                  onPressed: () => _scrollUp(),
+                  icon: Icon(FluentIcons.chevron_up_end),
+                  iconButtonMode: IconButtonMode.large,
+                ),
+                IconButton(
+                  onPressed: () =>
+                      BlocProvider.of<ConsoleCubit>(context).clear(),
+                  icon: Icon(FluentIcons.delete),
+                  iconButtonMode: IconButtonMode.large,
+                  //label: Text("Konsolenausgabe leeren"),
+                ),
+              ],
             ),
           ),
         ],
       ),
+    );
+  }
+
+  void _scrollDown() {
+    _scrollController.animateTo(
+      _scrollController.position.maxScrollExtent,
+      duration: const Duration(milliseconds: 500),
+      curve: Curves.easeOut,
+    );
+  }
+
+  void _scrollUp() {
+    _scrollController.animateTo(
+      _scrollController.position.minScrollExtent,
+      duration: const Duration(milliseconds: 500),
+      curve: Curves.easeOut,
     );
   }
 }

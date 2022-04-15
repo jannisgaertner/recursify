@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -9,11 +11,11 @@ class ConsoleCubit extends Cubit<ConsoleState> {
   }
 
   void addInfoText(String text) {
-    emit(state.copyWith(ConsoleOutput(text, type: OutputType.info)));
+    emit(state.copyWith(ConsoleOutput(text, outputType: OutputType.info)));
   }
 
   void addErrorOutput(String text) {
-    emit(state.copyWith(ConsoleOutput(text, type: OutputType.error)));
+    emit(state.copyWith(ConsoleOutput(text, outputType: OutputType.error)));
   }
 
   void clear() {
@@ -35,7 +37,13 @@ class ConsoleState {
 
   RichText get richtext {
     return RichText(
+      overflow: TextOverflow.visible,
       text: TextSpan(
+        style: TextStyle(
+          fontFamily: 'Roboto Mono',
+          fontSize: 16,
+          color: Colors.black,
+        ),
         children: _outputs.map((e) => e.textSpan).toList(),
       ),
     );
@@ -48,36 +56,27 @@ class ConsoleOutput {
 
   ConsoleOutput(
     this.text, {
-    this.type = OutputType.text,
-  });
+    OutputType? outputType,
+  }) : this.type = outputType ?? OutputType.text;
 
   InlineSpan get textSpan {
     switch (type) {
       case OutputType.text:
-        return TextSpan(
-          text: text,
-          style: TextStyle(
-            fontFamily: 'Roboto Mono',
-          ),
-        );
+        return _span();
       case OutputType.info:
-        return TextSpan(
-          text: text,
-          style: TextStyle(
-            color: Colors.blue['500'],
-            fontFamily: 'Roboto Mono',
-          ),
-        );
+        return _span(Colors.blue['normal']);
       case OutputType.error:
-        return TextSpan(
-          text: text,
-          style: TextStyle(
-            color: Colors.red['500'],
-            fontFamily: 'Roboto Mono',
-          ),
-        );
+        return _span(Colors.red['normal']);
     }
   }
+
+  TextSpan _span([Color? color]) => TextSpan(
+        text: text + "\n\n\n",
+        style: TextStyle(
+          color: color,
+          fontFamily: 'Roboto Mono',
+        ),
+      );
 }
 
 enum OutputType {
