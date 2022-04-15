@@ -1,5 +1,6 @@
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:recursify/editor/image_picker/image_picker.dart';
 
 import 'recursion_cubit.dart';
 
@@ -17,15 +18,11 @@ class RecursionSettings extends StatelessWidget {
         return Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Text(
-              "Einstellungen zur Rekursion",
-              style: FluentTheme.of(context).typography.title,
-            ),
-            Text(
-              "Wähle aus, wie tief die Rekursion maximal werden soll und wie lang das Video am Ende werden soll.",
-              style: FluentTheme.of(context).typography.body,
-            ),
-            SizedBox(height: 20),
+            StepTitle(
+              title: "Einstellungen zur Rekursion",
+              subtitle:
+                  "Wähle aus, wie tief die Rekursion maximal werden soll und wie lang das Video am Ende werden soll.",
+            ),           
             InfoLabel(
               label: "Tiefe der Rekursion: " + recursionDepthText,
               child: Slider(

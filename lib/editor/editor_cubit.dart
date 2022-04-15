@@ -58,6 +58,7 @@ class EditorCubit extends Cubit<EditorStep> {
     emit(EditorStep(0));
   }
 }
+
 class EditorStep {
   final int index;
 

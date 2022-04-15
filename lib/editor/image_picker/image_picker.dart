@@ -12,15 +12,11 @@ class ImagePicker extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Text(
-            "Wähle eine Datei aus",
-            style: FluentTheme.of(context).typography.title,
-          ),
-          Text(
-            "Das ausgewählte Bild wird daraufhin als Grundlage für ein rekursives Video verwendet.",
-            style: FluentTheme.of(context).typography.body,
-          ),
-          SizedBox(height: 20),
+          StepTitle(
+            title: "Wähle eine Datei aus",
+            subtitle:
+                "Das ausgewählte Bild wird daraufhin als Grundlage für ein rekursives Video verwendet.",
+          ),          
           Button(
             child: Text("Bild auswählen"),
             onPressed: () =>
@@ -44,6 +40,36 @@ class ImagePicker extends StatelessWidget {
           )
         ],
       ),
+    );
+  }
+}
+
+class StepTitle extends StatelessWidget {
+  const StepTitle({
+    Key? key,
+    required this.title,
+    this.subtitle,
+  }) : super(key: key);
+
+  final String title;
+  final String? subtitle;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        Text(
+          title,
+          style: FluentTheme.of(context).typography.title,
+        ),
+        if (subtitle != null)
+          Text(
+            subtitle!,
+            style: FluentTheme.of(context).typography.body,
+          ),
+        SizedBox(height: 20),
+      ],
     );
   }
 }

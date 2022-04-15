@@ -33,7 +33,6 @@ IF NOT EXIST "%~dp0export" (
 :: navigate to the export folder
 cd "%~dp0export"
 ''');
-
   }
 
   Future<bool> runShell(BuildContext? context, String command) async {
@@ -43,8 +42,8 @@ cd "%~dp0export"
         log(process.pid.toString());
         if (context != null)
           BlocProvider.of<ConsoleCubit>(context).addInfoText(
-          'Neuer Prozess mit PID ${process.pid.toString()}',
-        );
+            'Neuer Prozess mit PID ${process.pid.toString()}',
+          );
         //process.stdout.asBroadcastStream().listen((line) {
         //  BlocProvider.of<ConsoleCubit>(context).addTextOutput(line.toString());
         //});
@@ -114,5 +113,4 @@ cd "%~dp0export"
     }
     return null;
   }
-
 }

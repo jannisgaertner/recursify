@@ -5,7 +5,6 @@ import '../recursive_image_processor.dart';
 import 'image_picker/image_picker_cubit.dart';
 
 class RecursionCubit extends Cubit<RecursionState> {
-
   late final RecursiveImageProcessor _processor;
   ImagePickerCubit? _imagePickerCubit;
 
@@ -74,6 +73,13 @@ class RecursionCubit extends Cubit<RecursionState> {
     emit(RecursionState());
   }
 
+  setRelChildSize(double value) => emit(state.copyWith(relChildSize: value));
+
+  setRelChildOffsetY(double value) =>
+      emit(state.copyWith(relChildOffsetY: value));
+
+  setRelChildOffsetX(double value) =>
+      emit(state.copyWith(relChildOffsetX: value));
 }
 
 class RecursionState {
@@ -92,7 +98,7 @@ class RecursionState {
   final double relChildOffsetY;
 
   // resolution
-  final Size size; 
+  final Size size;
 
   RecursionState({
     this.isProcessing = false,

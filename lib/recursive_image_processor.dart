@@ -8,7 +8,6 @@ import 'editor/image_picker/image_picker_cubit.dart';
 import 'editor/recursion_cubit.dart';
 
 class RecursiveImageProcessor {
-
   ImagePickerCubit? _imagePickerCubit;
   RecursionCubit _recursionCubit;
   int _frame = 1;
@@ -93,9 +92,7 @@ class RecursiveImageProcessor {
 
   Future<File?> _saveImage(Image img, {int? width, int? height}) async {
     String filename = "export/img_${paddedInt(_frame)}.png";
-    Image sizedImage = copyResize(
-      img, width: width, height: height
-    );
+    Image sizedImage = copyResize(img, width: width, height: height);
     File saved = await File(filename).writeAsBytes(encodePng(sizedImage));
     return saved;
   }
