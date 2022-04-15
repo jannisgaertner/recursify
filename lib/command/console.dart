@@ -19,7 +19,6 @@ class Console extends StatelessWidget {
       child: Stack(
         alignment: Alignment.bottomLeft,
         children: [
-          
           BlocBuilder<ConsoleCubit, ConsoleState>(
             builder: (context, state) {
               return SingleChildScrollView(
@@ -51,5 +50,4 @@ class Console extends StatelessWidget {
       ),
     );
   }
-
 }
