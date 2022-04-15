@@ -3,6 +3,7 @@ import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter/material.dart' as material;
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:recursify/editor/image_picker/image_picker_cubit.dart';
+import 'package:recursify/editor/recursion_cubit.dart';
 import 'package:window_manager/window_manager.dart';
 
 import 'command/console_output_cubit.dart';
@@ -40,6 +41,7 @@ class RecursifyApp extends StatelessWidget {
         BlocProvider<NavCubit>(create: (context) => NavCubit()),
         BlocProvider<EditorCubit>(create: (context) => EditorCubit()),
         BlocProvider<ImagePickerCubit>(create: (context) => ImagePickerCubit()),
+        BlocProvider<RecursionCubit>(create: (context) => RecursionCubit()),
       ],
       child: material.Theme(
         data: material.ThemeData(
