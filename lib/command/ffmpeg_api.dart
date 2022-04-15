@@ -40,7 +40,8 @@ class FfmpegAPI {
 
   Future<void> createVideo(BuildContext context) async {
     await runShell(context, 'cd');
-    String options = "-i export/images/*.png -c:v libx264 -pix_fmt yuv420p export/out.mp4";
+    String options =
+        "-framerate 25 -i img%.png \-c:v libx264 -pix_fmt yuv420p out.mp4";
     await runFfmpeg(context, options);
   }
 }
