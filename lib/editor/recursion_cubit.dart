@@ -7,9 +7,18 @@ import 'image_picker/image_picker_cubit.dart';
 class RecursionCubit extends Cubit<RecursionState> {
 
   late final RecursiveImageProcessor _processor;
+  ImagePickerCubit? _imagePickerCubit;
 
-  RecursionCubit() : super(RecursionState()) {
-    _processor = RecursiveImageProcessor();
+  RecursionCubit(ImagePickerCubit? imagePickerCubit) : super(RecursionState()) {
+    if (imagePickerCubit != null) _imagePickerCubit = imagePickerCubit;
+    _processor = RecursiveImageProcessor(_imagePickerCubit, this);
+  }
+
+  ImagePickerCubit? get picker => _imagePickerCubit;
+
+  set picker(ImagePickerCubit? value) {
+    _imagePickerCubit = value;
+    _processor.picker = value;
   }
 
   void startProcessing() {

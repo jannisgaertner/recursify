@@ -41,7 +41,7 @@ class RecursifyApp extends StatelessWidget {
         BlocProvider<NavCubit>(create: (context) => NavCubit()),
         BlocProvider<EditorCubit>(create: (context) => EditorCubit()),
         BlocProvider<ImagePickerCubit>(create: (context) => ImagePickerCubit()),
-        BlocProvider<RecursionCubit>(create: (context) => RecursionCubit()),
+        BlocProvider<RecursionCubit>(create: (context) => RecursionCubit(null)),
       ],
       child: material.Theme(
         data: material.ThemeData(
