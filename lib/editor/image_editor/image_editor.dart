@@ -20,21 +20,21 @@ class ImageEditor extends StatelessWidget {
             ),
             severity: InfoBarSeverity.info,
           );
-        return Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            ClipRRect(
-              child: Image.file(state.file!),
-              borderRadius: BorderRadius.all(
-                Radius.circular(10),
+        return SizedBox(
+          height: 300,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              ClipRRect(
+                child: Image.file(state.file!),
+                borderRadius: BorderRadius.all(
+                  Radius.circular(10),
+                ),
               ),
-            ),
-            SizedBox(width: 20),
-            SizedBox(
-              child: AreaSelector(),
-              height: 200,
-            ),
-          ],
+              SizedBox(width: 20),
+              AreaSelector(),
+            ],
+          ),
         );
       },
     );

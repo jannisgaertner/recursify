@@ -39,6 +39,7 @@ class RecursionCubit extends Cubit<RecursionState> {
         "Tiefe der Rekursion",
         "Länge des Videos",
         "Framerate",
+        "Auflösung",
       ];
 
   String getValue(String e, BuildContext context) {
@@ -54,6 +55,11 @@ class RecursionCubit extends Cubit<RecursionState> {
         return state.frameCount.toString() + " Frames";
       case "Framerate":
         return state.frameRate.toString() + " FPS";
+      case "Auflösung":
+        return state.size.width.toString() +
+            " * " +
+            state.size.height.toString() +
+            " px";
       default:
         return "";
     }
@@ -74,6 +80,7 @@ class RecursionState {
   final double relChildSize;
   final double relChildOffsetX;
   final double relChildOffsetY;
+  final Size size;
 
   RecursionState({
     this.isProcessing = false,
@@ -83,6 +90,7 @@ class RecursionState {
     this.relChildSize = 0.9,
     this.relChildOffsetX = 0,
     this.relChildOffsetY = 0,
+    this.size = const Size(1280, 720),
   }) : assert(relChildSize <= 1 && relChildSize >= 0);
 
   RecursionState copyWith({
@@ -93,6 +101,7 @@ class RecursionState {
     double? relChildSize,
     double? relChildOffsetX,
     double? relChildOffsetY,
+    Size? size,
   }) {
     return RecursionState(
       isProcessing: isProcessing ?? this.isProcessing,
@@ -102,6 +111,7 @@ class RecursionState {
       relChildSize: relChildSize ?? this.relChildSize,
       relChildOffsetX: relChildOffsetX ?? this.relChildOffsetX,
       relChildOffsetY: relChildOffsetY ?? this.relChildOffsetY,
+      size: size ?? this.size,
     );
   }
 }

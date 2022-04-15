@@ -39,7 +39,7 @@ class ImagePicker extends StatelessWidget {
                     onPressed: () =>
                         BlocProvider.of<ImagePickerCubit>(context).clear(),
                   ),
-                  Text(state.file!.path),
+                  Flexible(child: Text(state.file!.path)),
                 ],
               );
             },

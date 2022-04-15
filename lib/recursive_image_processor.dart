@@ -1,7 +1,6 @@
 import 'dart:developer';
 import 'dart:io';
 
-import 'package:fluent_ui/fluent_ui.dart' as fluent;
 import 'package:image/image.dart';
 
 import 'editor/image_picker/image_picker_cubit.dart';
@@ -41,7 +40,12 @@ class RecursiveImageProcessor {
       log("Failed to decode image");
       return;
     }
-    await File(filename).writeAsBytes(encodePng(decodedImage));
+    Image sizedImage = copyResize(
+      decodedImage,
+      width: _recursionCubit.state.size.width.toInt(),
+      height: _recursionCubit.state.size.height.toInt(),
+    );
+    await File(filename).writeAsBytes(encodePng(sizedImage));
   }
 
   String _paddedInt(int value) {
