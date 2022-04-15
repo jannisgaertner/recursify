@@ -29,9 +29,9 @@ class ImagePicker extends StatelessWidget {
                 BlocProvider.of<ImagePickerCubit>(context).pickImage(),
           ),
           SizedBox(height: 20),
-          BlocBuilder<ImagePickerCubit, File?>(
+          BlocBuilder<ImagePickerCubit, ImagePickerState>(
             builder: (context, state) {
-              if (state == null) return Text("Keine Datei ausgewählt");
+              if (state.file == null) return Text("Keine Datei ausgewählt");
               return Row(
                 children: [
                   IconButton(
@@ -39,7 +39,7 @@ class ImagePicker extends StatelessWidget {
                     onPressed: () =>
                         BlocProvider.of<ImagePickerCubit>(context).clear(),
                   ),
-                  Text(state.path),
+                  Text(state.file!.path),
                 ],
               );
             },

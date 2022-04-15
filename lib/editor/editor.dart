@@ -10,9 +10,9 @@ class Editor extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: Container(
-        constraints: BoxConstraints(maxWidth: 1000),
-        child: material.Material(
+      child: material.Material(
+        child: Container(
+          constraints: BoxConstraints(maxWidth: 1000),
           child: BlocBuilder<EditorCubit, EditorStep>(
             builder: (context, state) {
               return material.Stepper(

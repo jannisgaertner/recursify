@@ -18,7 +18,7 @@ class NavView extends StatelessWidget {
       builder: (context, index) {
         return NavigationView(
           appBar: NavigationAppBar(
-            leading: FlutterLogo(),
+            //leading: FlutterLogo(),
             automaticallyImplyLeading: false,
             title: DragToMoveArea(
               child: Align(

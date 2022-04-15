@@ -10,9 +10,9 @@ class ImageEditor extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<ImagePickerCubit, File?>(
+    return BlocBuilder<ImagePickerCubit, ImagePickerState>(
       builder: (context, state) {
-        if (state == null)
+        if (state.file == null)
           return InfoBar(
             title: Text("Keine Datei ausgewählt"),
             content: Text(
@@ -20,16 +20,56 @@ class ImageEditor extends StatelessWidget {
             ),
             severity: InfoBarSeverity.info,
           );
-        return Container(
-          alignment: Alignment.centerLeft,
-          child: ClipRRect(
-            child: Image.file(state),
-            borderRadius: BorderRadius.all(
-              Radius.circular(10),
+        return Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            ClipRRect(
+              child: Image.file(state.file!),
+              borderRadius: BorderRadius.all(
+                Radius.circular(10),
+              ),
             ),
-          ),
+            SizedBox(width: 20),
+            Expanded(child: AreaSelector()),
+          ],
         );
       },
+    );
+  }
+}
+
+class AreaSelector extends StatelessWidget {
+  const AreaSelector({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+        border: Border.all(
+          color: FluentTheme.of(context).accentColor,
+          width: 2,
+        ),
+        borderRadius: BorderRadius.circular(10),
+      ),
+      child: BlocBuilder<ImagePickerCubit, ImagePickerState>(
+        builder: (context, state) {
+          if (state.size == null) {
+            return Text("Größe des Bildes wird ermittelt...");
+          }
+
+          return AspectRatio(
+            aspectRatio: state.aspectRatio,
+            child: Center(
+              child: Text(
+                "Bereich auswählen",
+                style: FluentTheme.of(context).typography.body,
+              ),
+            ),
+          );
+        },
+      ),
     );
   }
 }

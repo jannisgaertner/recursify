@@ -1,5 +1,6 @@
 import 'package:bitsdojo_window/bitsdojo_window.dart';
 import 'package:fluent_ui/fluent_ui.dart';
+import 'package:flutter/material.dart' as material;
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:recursify/editor/image_picker/image_picker_cubit.dart';
 import 'package:window_manager/window_manager.dart';
@@ -40,15 +41,22 @@ class RecursifyApp extends StatelessWidget {
         BlocProvider<EditorCubit>(create: (context) => EditorCubit()),
         BlocProvider<ImagePickerCubit>(create: (context) => ImagePickerCubit()),
       ],
-      child: FluentApp(
-        title: title,
-        home: NavView(),
-        theme: ThemeData(
-          brightness: Brightness.light,
-          visualDensity: VisualDensity.comfortable,
-          accentColor: Colors.orange,
+      child: material.Theme(
+        data: material.ThemeData(
+          primarySwatch: material.Colors.orange,
+          visualDensity: VisualDensity.adaptivePlatformDensity,
+          canvasColor: Colors.grey[20],
         ),
-        debugShowCheckedModeBanner: false,
+        child: FluentApp(
+          title: title,
+          home: NavView(),
+          theme: ThemeData(
+            brightness: Brightness.light,
+            visualDensity: VisualDensity.comfortable,
+            accentColor: Colors.orange,
+          ),
+          debugShowCheckedModeBanner: false,
+        ),
       ),
     );
   }

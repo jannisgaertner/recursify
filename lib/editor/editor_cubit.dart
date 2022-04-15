@@ -36,7 +36,7 @@ class EditorCubit extends Cubit<EditorStep> {
   Map<String, Widget> _stepsMap(BuildContext context) {
     return {
       'Bild als Grundlage auswählen': ImagePicker(),
-      'Bild bearbeiten': ImageEditor(),
+      'Bildausschnitt bearbeiten': ImageEditor(),
       'Rekursionstiefe wählen': Text("dritter Schritt"),
     };
   }
