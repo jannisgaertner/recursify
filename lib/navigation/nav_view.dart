@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:window_manager/window_manager.dart';
 
 import '../command/console.dart';
+import '../editor/editor.dart';
 import '../main.dart';
 import 'nav_cubit.dart';
 
@@ -68,7 +69,7 @@ class NavView extends StatelessWidget {
           content: NavigationBody(
             index: index,
             children: [
-              AppBody(),
+              Editor(),
               Container(),
               Console(),
             ],

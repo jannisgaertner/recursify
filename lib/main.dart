@@ -1,12 +1,10 @@
 import 'package:bitsdojo_window/bitsdojo_window.dart';
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:process_run/cmd_run.dart';
 import 'package:window_manager/window_manager.dart';
 
-import 'command/console.dart';
 import 'command/console_output_cubit.dart';
-import 'command/ffmpeg_api.dart';
+import 'editor/editor_cubit.dart';
 import 'navigation/nav_cubit.dart';
 import 'navigation/nav_view.dart';
 
@@ -38,6 +36,7 @@ class RecursifyApp extends StatelessWidget {
       providers: [
         BlocProvider<ConsoleCubit>(create: (context) => ConsoleCubit()),
         BlocProvider<NavCubit>(create: (context) => NavCubit()),
+        BlocProvider<EditorCubit>(create: (context) => EditorCubit()),
       ],
       child: FluentApp(
         title: title,
@@ -49,40 +48,6 @@ class RecursifyApp extends StatelessWidget {
         ),
         debugShowCheckedModeBanner: false,
       ),
-    );
-  }
-}
-
-class AppBody extends StatelessWidget {
-  const AppBody({
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        Expanded(
-          child: Console(),
-        ),
-        Expanded(
-          child: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                FilledButton(
-                  onPressed: () => FfmpegAPI().createVideo(context, 1),
-                  child: Text("Video aus Bildern erstellen"),
-                ),
-              ],
-            ),
-          ),
-        ),
-      ],
     );
   }
 }
