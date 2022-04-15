@@ -118,4 +118,9 @@ class RecursiveImageProcessor {
             ? "0$value"
             : value.toString();
   }
+
+  void reset() {
+    _frame = 1;
+    _outputPath = null;
+  }
 }

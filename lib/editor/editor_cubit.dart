@@ -53,6 +53,10 @@ class EditorCubit extends Cubit<EditorStep> {
             ))
         .toList();
   }
+
+  void clear() {
+    emit(EditorStep(0));
+  }
 }
 class EditorStep {
   final int index;

@@ -69,6 +69,11 @@ class RecursionCubit extends Cubit<RecursionState> {
     }
   }
 
+  void clear() {
+    this._processor.reset();
+    emit(RecursionState());
+  }
+
 }
 
 class RecursionState {

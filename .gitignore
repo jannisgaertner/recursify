@@ -51,3 +51,5 @@ app.*.map.json
 /ffmpeg/
 
 /export/
+
+out.mp4

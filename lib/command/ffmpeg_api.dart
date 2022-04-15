@@ -13,12 +13,27 @@ class FfmpegAPI {
   static String ffmpeg = "./ffmpeg/bin/ffmpeg";
 
   FfmpegAPI() : shell = Shell(throwOnError: false) {
-    _init();
+    //_init();
   }
 
   void _init() async {
-    await createFolder();
-    await runShell(null, 'cd export');
+    await runShell(null, '''
+:: check the name of the current directory
+:: if it is 'export' exit this script
+for %%I in (.) do set CurrDirName=%%~nxI
+if "%CurrDirName%"=="export" goto :eof
+
+:: Check if folder export exists
+IF NOT EXIST "%~dp0export" (
+    echo "The export folder doesn't exist."
+    :: create folder
+    mkdir "%~dp0export"
+)
+
+:: navigate to the export folder
+cd "%~dp0export"
+''');
+
   }
 
   Future<bool> runShell(BuildContext? context, String command) async {
@@ -80,12 +95,12 @@ class FfmpegAPI {
     await runShell(context, 'cd');
     String imgFiles = "";
     for (int i = 1; i < math.min(recursionLevel, framecount); i++) {
-      imgFiles += "|img_${RecursiveImageProcessor.paddedInt(i)}.png";
+      imgFiles += "|export/img_${RecursiveImageProcessor.paddedInt(i)}.png";
     }
     if (framecount > recursionLevel) {
       for (var i = recursionLevel; i < framecount; i++) {
         imgFiles +=
-            "|img_${RecursiveImageProcessor.paddedInt(recursionLevel - 1)}.png";
+            "|export/img_${RecursiveImageProcessor.paddedInt(recursionLevel - 1)}.png";
       }
     }
     imgFiles = imgFiles.substring(1);
@@ -100,7 +115,4 @@ class FfmpegAPI {
     return null;
   }
 
-  Future<void> createFolder() {
-    return shell.run('mkdir -p export');
-  }
 }
