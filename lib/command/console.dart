@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'dart:developer';
@@ -15,7 +15,7 @@ class Console extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Colors.black,
+      color: FluentTheme.of(context).acrylicBackgroundColor,
       child: Stack(
         alignment: Alignment.bottomLeft,
         children: [
@@ -28,10 +28,7 @@ class Console extends StatelessWidget {
                   margin: const EdgeInsets.all(20),
                   child: Text(
                     state.text,
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontFamily: 'Roboto Mono',
-                    ),
+                    style: TextStyle(fontFamily: 'Roboto Mono'),
                   ),
                 ),
               );
@@ -40,10 +37,11 @@ class Console extends StatelessWidget {
           Container(
             alignment: Alignment.bottomRight,
             margin: const EdgeInsets.all(20),
-            child: TextButton.icon(
+            child: IconButton(
               onPressed: () => BlocProvider.of<ConsoleCubit>(context).clear(),
-              icon: Icon(Icons.delete),
-              label: Text("Konsolenausgabe leeren"),
+              icon: Icon(FluentIcons.delete),
+              iconButtonMode: IconButtonMode.large,
+              //label: Text("Konsolenausgabe leeren"),
             ),
           ),
         ],

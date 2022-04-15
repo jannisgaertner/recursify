@@ -2,6 +2,7 @@ import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:window_manager/window_manager.dart';
 
+import '../command/console.dart';
 import '../main.dart';
 import 'nav_cubit.dart';
 
@@ -16,14 +17,17 @@ class NavView extends StatelessWidget {
       builder: (context, index) {
         return NavigationView(
           appBar: NavigationAppBar(
-            title: () {
-              return const DragToMoveArea(
-                child: Align(
-                  alignment: AlignmentDirectional.centerStart,
-                  child: Text("appTitle"),
+            leading: FlutterLogo(),
+            automaticallyImplyLeading: false,
+            title: DragToMoveArea(
+              child: Align(
+                alignment: AlignmentDirectional.centerStart,
+                child: Text(
+                  title,
+                  style: FluentTheme.of(context).typography.title,
                 ),
-              );
-            }(),
+              ),
+            ),
             actions: DragToMoveArea(
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -44,33 +48,30 @@ class NavView extends StatelessWidget {
           pane: NavigationPane(
             selected: index,
             onChanged: (i) => BlocProvider.of<NavCubit>(context).setIndex(i),
-            displayMode: PaneDisplayMode.auto,
+            displayMode: PaneDisplayMode.top,
+            //scrollController: ScrollController(initialScrollOffset: 0),
             items: [
               PaneItem(
                 icon: Icon(FluentIcons.edit_photo),
-                title: Text(
-                  'Editor',
-                  style: FluentTheme.of(context).typography.titleLarge,
-                ),
+                title: const Text('Editor'),
               ),
               PaneItem(
                 icon: Icon(FluentIcons.export),
                 title: const Text('Exportieren'),
               ),
+              PaneItem(
+                icon: Icon(FluentIcons.code),
+                title: const Text('Konsolenausgabe'),
+              ),
             ],
           ),
-          content: NavigationBody.builder(
+          content: NavigationBody(
             index: index,
-            itemBuilder: (context, index) {
-              switch (index) {
-                case 0:
-                  return AppBody();
-                default:
-                  return Center(
-                    child: Text("Fehler"),
-                  );
-              }
-            },
+            children: [
+              AppBody(),
+              Container(),
+              Console(),
+            ],
           ),
         );
       },

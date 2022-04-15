@@ -1,5 +1,7 @@
+import 'package:bitsdojo_window/bitsdojo_window.dart';
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:process_run/cmd_run.dart';
 import 'package:window_manager/window_manager.dart';
 
 import 'command/console.dart';
@@ -8,19 +10,25 @@ import 'command/ffmpeg_api.dart';
 import 'navigation/nav_cubit.dart';
 import 'navigation/nav_view.dart';
 
+const title = 'Recursify Video Editor';
+const Size minWindowSize = const Size(755, 545);
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await WindowManager.instance.ensureInitialized();
   windowManager.waitUntilReadyToShow().then((_) async {
-    await windowManager.setTitleBarStyle(
-      TitleBarStyle.hidden,
-      windowButtonVisibility: true,
-    );
     await windowManager.maximize();
-    await windowManager.setMinimumSize(const Size(755, 545));
+    await windowManager.setMinimumSize(minWindowSize);
   });
 
   runApp(RecursifyApp());
+
+  doWhenWindowReady(() {
+    appWindow.minSize = minWindowSize;
+    appWindow.alignment = Alignment.center;
+    appWindow.title = title;
+    appWindow.show();
+  });
 }
 
 class RecursifyApp extends StatelessWidget {
@@ -32,7 +40,7 @@ class RecursifyApp extends StatelessWidget {
         BlocProvider<NavCubit>(create: (context) => NavCubit()),
       ],
       child: FluentApp(
-        title: 'Recursify Video Editor',
+        title: title,
         home: NavView(),
         theme: ThemeData(
           brightness: Brightness.light,
@@ -56,7 +64,7 @@ class AppBody extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         Expanded(
-          child: Container(), //Console(),
+          child: Console(),
         ),
         Expanded(
           child: Container(

@@ -17,14 +17,14 @@ class FfmpegAPI {
       command,
       onProcess: (process) async {
         log(process.pid.toString());
-        BlocProvider.of<ConsoleCubit>(context).addTextOutput(
+        BlocProvider.of<ConsoleCubit>(context).addInfoText(
           'Neuer Prozess mit PID ${process.pid.toString()}',
         );
         //process.stdout.asBroadcastStream().listen((line) {
         //  BlocProvider.of<ConsoleCubit>(context).addTextOutput(line.toString());
         //});
         await process.exitCode;
-        BlocProvider.of<ConsoleCubit>(context).addTextOutput(
+        BlocProvider.of<ConsoleCubit>(context).addInfoText(
           'Prozess mit PID ${process.pid.toString()} beendet mit Code ${process.exitCode.toString()}',
         );
       },
