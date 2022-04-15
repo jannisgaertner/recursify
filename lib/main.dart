@@ -43,7 +43,7 @@ class RecursifyApp extends StatelessWidget {
       ],
       child: material.Theme(
         data: material.ThemeData(
-          primarySwatch: material.Colors.orange,
+          primarySwatch: material.Colors.teal,
           visualDensity: VisualDensity.adaptivePlatformDensity,
           canvasColor: Colors.grey[20],
         ),
@@ -53,7 +53,7 @@ class RecursifyApp extends StatelessWidget {
           theme: ThemeData(
             brightness: Brightness.light,
             visualDensity: VisualDensity.comfortable,
-            accentColor: Colors.orange,
+            accentColor: Colors.teal,
           ),
           debugShowCheckedModeBanner: false,
         ),

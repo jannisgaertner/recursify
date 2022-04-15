@@ -21,7 +21,7 @@ class ImageEditor extends StatelessWidget {
             severity: InfoBarSeverity.info,
           );
         return Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          mainAxisAlignment: MainAxisAlignment.start,
           children: [
             ClipRRect(
               child: Image.file(state.file!),
@@ -30,7 +30,10 @@ class ImageEditor extends StatelessWidget {
               ),
             ),
             SizedBox(width: 20),
-            Expanded(child: AreaSelector()),
+            SizedBox(
+              child: AreaSelector(),
+              height: 200,
+            ),
           ],
         );
       },
@@ -59,14 +62,44 @@ class AreaSelector extends StatelessWidget {
             return Text("Größe des Bildes wird ermittelt...");
           }
 
-          return AspectRatio(
-            aspectRatio: state.aspectRatio,
-            child: Center(
-              child: Text(
-                "Bereich auswählen",
-                style: FluentTheme.of(context).typography.body,
-              ),
-            ),
+          return LayoutBuilder(
+            builder: (context, constraints) {
+              return Stack(
+                clipBehavior: Clip.none,
+                children: [
+                  AspectRatio(
+                    aspectRatio: state.aspectRatio,
+                    child: Center(
+                      child: Text(
+                        "Bereich auswählen",
+                        style: FluentTheme.of(context).typography.body,
+                      ),
+                    ),
+                  ),
+                  Positioned(
+                    left: 10,
+                    height: 150,
+                    // width: constraints.maxWidth - 10,
+                    top: 10,
+                    child: AspectRatio(
+                      aspectRatio: state.aspectRatio,
+                      child: Container(
+                        decoration: BoxDecoration(
+                          border: Border.all(
+                            color: FluentTheme.of(context).accentColor,
+                            width: 2,
+                          ),
+                          color: FluentTheme.of(context)
+                              .accentColor
+                              .withOpacity(0.2),
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              );
+            },
           );
         },
       ),
