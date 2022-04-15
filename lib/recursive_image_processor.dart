@@ -29,23 +29,69 @@ class RecursiveImageProcessor {
       return;
     }
 
-    File img = _imagePickerCubit!.state.file!;
-    await _saveImage(img);
-  }
+    // save first frame
+    File imgFile = _imagePickerCubit!.state.file!;
+    await _saveImageFromFile(
+      imgFile,
+      width: state.size.width.toInt(),
+      height: state.size.height.toInt(),
+    );
 
-  _saveImage(File img) async {
-    String filename = "img_${_paddedInt(++_frame)}.png";
-    Image? decodedImage = decodePng(await img.readAsBytes());
-    if (decodedImage == null) {
-      log("Failed to decode image");
+    // kick off recursion
+    Image? baseImg = decodeImage(imgFile.readAsBytesSync());
+    if (baseImg == null) {
+      log("Image is null"); // TODO
       return;
     }
-    Image sizedImage = copyResize(
-      decodedImage,
-      width: _recursionCubit.state.size.width.toInt(),
-      height: _recursionCubit.state.size.height.toInt(),
+    log("starting recursive processing of depth ${state.recursionDepth}");
+    await _imageRecursion(baseImg, baseImg, state);
+    _recursionCubit.endProcessing();
+  }
+
+  Future<void> _imageRecursion(
+      Image baseImg, Image topImg, RecursionState state) async {
+    if (++_frame >= state.recursionDepth) return;
+
+    //Image copyInto(Image dst, Image src, {int dstX, int dstY, int srcX, int srcY, int srcW, int srcH, bool blend = true});
+    //Copy an area of the src image into dst.
+    //Returns the modified dst image.
+    int srcX = (topImg.width * state.relChildOffsetX).toInt();
+    int srcY = (topImg.height * state.relChildOffsetY).toInt();
+    int srcW = (topImg.width * state.relChildSize).toInt();
+    int srcH = (topImg.height * state.relChildSize).toInt();
+    Image topImgScaled = copyResize(topImg, width: srcW, height: srcH);
+    log("srcX: $srcX, srcY: $srcY, srcW: $srcW, srcH: $srcH");
+    log("baseImg.width: ${baseImg.width}, baseImg.height: ${baseImg.height}");
+    Image resImg =
+        copyInto(baseImg, topImgScaled, srcX: 0, srcY: 0, center: true);
+
+    File? res = await _saveImage(
+      resImg,
+      width: state.size.width.toInt(),
+      height: state.size.height.toInt(),
     );
-    await File(filename).writeAsBytes(encodePng(sizedImage));
+    if (res == null) return;
+
+    log("recursion level ${_frame} successful");
+    _imageRecursion(baseImg, resImg, state);
+  }
+
+  Future<File?> _saveImageFromFile(File img, {int? width, int? height}) async {
+    Image? decodedImage = decodeImage(await img.readAsBytes());
+    if (decodedImage == null) {
+      log("Failed to decode image");
+      return null;
+    }
+    return await _saveImage(decodedImage, width: width, height: height);
+  }
+
+  Future<File?> _saveImage(Image img, {int? width, int? height}) async {
+    String filename = "img_${_paddedInt(_frame)}.png";
+    Image sizedImage = copyResize(
+      img, width: width, height: height
+    );
+    File saved = await File(filename).writeAsBytes(encodePng(sizedImage));
+    return saved;
   }
 
   String _paddedInt(int value) {

@@ -26,6 +26,10 @@ class RecursionCubit extends Cubit<RecursionState> {
     emit(state.copyWith(isProcessing: true));
   }
 
+  void endProcessing() {
+    emit(state.copyWith(isProcessing: false));
+  }
+
   void setDepth(double value) {
     emit(state.copyWith(recursionDepth: value.toInt()));
   }
@@ -64,6 +68,7 @@ class RecursionCubit extends Cubit<RecursionState> {
         return "";
     }
   }
+
 }
 
 class RecursionState {
@@ -80,7 +85,9 @@ class RecursionState {
   final double relChildSize;
   final double relChildOffsetX;
   final double relChildOffsetY;
-  final Size size;
+
+  // resolution
+  final Size size; 
 
   RecursionState({
     this.isProcessing = false,
@@ -88,8 +95,8 @@ class RecursionState {
     this.frameCount = 25,
     this.frameRate = 25,
     this.relChildSize = 0.9,
-    this.relChildOffsetX = 0,
-    this.relChildOffsetY = 0,
+    this.relChildOffsetX = 0.05,
+    this.relChildOffsetY = 0.05,
     this.size = const Size(1280, 720),
   }) : assert(relChildSize <= 1 && relChildSize >= 0);
 
