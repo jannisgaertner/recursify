@@ -1,7 +1,21 @@
+import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../recursive_image_processor.dart';
+import 'image_picker/image_picker_cubit.dart';
+
 class RecursionCubit extends Cubit<RecursionState> {
-  RecursionCubit() : super(RecursionState());
+
+  late final RecursiveImageProcessor _processor;
+
+  RecursionCubit() : super(RecursionState()) {
+    _processor = RecursiveImageProcessor();
+  }
+
+  void startProcessing() {
+    _processor.start(state);
+    emit(state.copyWith(isProcessing: true));
+  }
 
   void setDepth(double value) {
     emit(state.copyWith(recursionDepth: value.toInt()));
@@ -9,6 +23,31 @@ class RecursionCubit extends Cubit<RecursionState> {
 
   void setFrameCount(double value) {
     emit(state.copyWith(frameCount: value.toInt()));
+  }
+
+  static List<String> get titles => [
+        "Dateipfad",
+        "Tiefe der Rekursion",
+        "Länge des Videos",
+        "Framerate",
+      ];
+
+  String getValue(String e, BuildContext context) {
+    switch (e) {
+      case "Dateipfad":
+        return BlocProvider.of<ImagePickerCubit>(context).state.file?.path ??
+            "unbekannt";
+      case "Tiefe der Rekursion":
+        return state.recursionDepth == RecursionState.maxRecursionDepth
+            ? "unendlich"
+            : state.recursionDepth.toString() + " Ebenen";
+      case "Länge des Videos":
+        return state.frameCount.toString() + " Frames";
+      case "Framerate":
+        return state.frameRate.toString() + " FPS";
+      default:
+        return "";
+    }
   }
 }
 

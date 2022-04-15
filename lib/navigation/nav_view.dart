@@ -4,6 +4,7 @@ import 'package:window_manager/window_manager.dart';
 
 import '../command/console.dart';
 import '../editor/editor.dart';
+import '../export/export.dart';
 import '../main.dart';
 import 'nav_cubit.dart';
 
@@ -70,7 +71,7 @@ class NavView extends StatelessWidget {
             index: index,
             children: [
               Editor(),
-              Container(),
+              Export(),
               Console(),
             ],
           ),

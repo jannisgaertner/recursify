@@ -26,24 +26,28 @@ class RecursionSettings extends StatelessWidget {
               style: FluentTheme.of(context).typography.body,
             ),
             SizedBox(height: 20),
-            Text("Tiefe der Rekursion: " + recursionDepthText),
-            Slider(
-              value: state.recursionDepth.toDouble(),
-              onChanged: (value) =>
-                  BlocProvider.of<RecursionCubit>(context).setDepth(value),
-              divisions: RecursionState.maxRecursionDepth,
-              max: RecursionState.maxRecursionDepth.toDouble(),
-              min: 0,
+            InfoLabel(
+              label: "Tiefe der Rekursion: " + recursionDepthText,
+              child: Slider(
+                value: state.recursionDepth.toDouble(),
+                onChanged: (value) =>
+                    BlocProvider.of<RecursionCubit>(context).setDepth(value),
+                divisions: RecursionState.maxRecursionDepth,
+                max: RecursionState.maxRecursionDepth.toDouble(),
+                min: 0,
+              ),
             ),
             SizedBox(height: 20),
-            Text("Länge des Videos: ${state.frameCount} Frames"),
-            Slider(
-              value: state.frameCount.toDouble(),
-              onChanged: (value) =>
-                  BlocProvider.of<RecursionCubit>(context).setFrameCount(value),
-              divisions: RecursionState.maxFrameCount,
-              max: RecursionState.maxFrameCount.toDouble(),
-              min: 1,
+            InfoLabel(
+              label: "Länge des Videos: ${state.frameCount} Frames",
+              child: Slider(
+                value: state.frameCount.toDouble(),
+                onChanged: (value) => BlocProvider.of<RecursionCubit>(context)
+                    .setFrameCount(value),
+                divisions: RecursionState.maxFrameCount,
+                max: RecursionState.maxFrameCount.toDouble(),
+                min: 1,
+              ),
             )
           ],
         );
