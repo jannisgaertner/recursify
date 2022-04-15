@@ -49,3 +49,5 @@ app.*.map.json
 /ffmpeg/doc/
 /ffmpeg/presets/
 /ffmpeg/
+
+/export/

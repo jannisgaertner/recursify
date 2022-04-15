@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:image/image.dart';
 
+import 'command/ffmpeg_api.dart';
 import 'editor/image_picker/image_picker_cubit.dart';
 import 'editor/recursion_cubit.dart';
 
@@ -10,7 +11,8 @@ class RecursiveImageProcessor {
 
   ImagePickerCubit? _imagePickerCubit;
   RecursionCubit _recursionCubit;
-  int _frame = 0;
+  int _frame = 1;
+  String? _outputPath;
 
   RecursiveImageProcessor(this._imagePickerCubit, this._recursionCubit);
 
@@ -45,12 +47,16 @@ class RecursiveImageProcessor {
     }
     log("starting recursive processing of depth ${state.recursionDepth}");
     await _imageRecursion(baseImg, baseImg, state);
+
+    // save as video
+    log("saving video");
+    await _saveVideo(state);
     _recursionCubit.endProcessing();
   }
 
   Future<void> _imageRecursion(
       Image baseImg, Image topImg, RecursionState state) async {
-    if (++_frame >= state.recursionDepth) return;
+    if (++_frame > state.recursionDepth) return;
 
     //Image copyInto(Image dst, Image src, {int dstX, int dstY, int srcX, int srcY, int srcW, int srcH, bool blend = true});
     //Copy an area of the src image into dst.
@@ -72,8 +78,8 @@ class RecursiveImageProcessor {
     );
     if (res == null) return;
 
-    log("recursion level ${_frame} successful");
-    _imageRecursion(baseImg, resImg, state);
+    log("recursion level $_frame successful");
+    await _imageRecursion(baseImg, resImg, state);
   }
 
   Future<File?> _saveImageFromFile(File img, {int? width, int? height}) async {
@@ -86,7 +92,7 @@ class RecursiveImageProcessor {
   }
 
   Future<File?> _saveImage(Image img, {int? width, int? height}) async {
-    String filename = "img_${_paddedInt(_frame)}.png";
+    String filename = "export/img_${paddedInt(_frame)}.png";
     Image sizedImage = copyResize(
       img, width: width, height: height
     );
@@ -94,7 +100,18 @@ class RecursiveImageProcessor {
     return saved;
   }
 
-  String _paddedInt(int value) {
+  Future<void> _saveVideo(RecursionState state) async {
+    FfmpegAPI ffmpeg = FfmpegAPI();
+    _outputPath = await ffmpeg.createVideo(
+      null,
+      framecount: state.frameCount,
+      recursionLevel: state.recursionDepth,
+      framerate: state.frameRate,
+      outputWidth: state.size.width.toInt(),
+    );
+  }
+
+  static String paddedInt(int value) {
     return value < 10
         ? "00$value"
         : value < 100

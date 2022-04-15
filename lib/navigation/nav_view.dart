@@ -67,7 +67,7 @@ class NavView extends StatelessWidget {
               ),
               PaneItem(
                 icon: Icon(FluentIcons.code),
-                title: const Text('Konsolenausgabe'),
+                title: const Text('Konsole'),
               ),
             ],
           ),

@@ -1,15 +1,16 @@
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'dart:developer';
-
 import 'console_output_cubit.dart';
+import 'ffmpeg_api.dart';
 
 class Console extends StatelessWidget {
   Console({
     Key? key,
-  }) : super(key: key);
+  })  : ffmpeg = FfmpegAPI(),
+        super(key: key);
 
+  final FfmpegAPI ffmpeg;
   final ScrollController _scrollController = ScrollController();
 
   @override
@@ -30,6 +31,52 @@ class Console extends StatelessWidget {
                 ),
               );
             },
+          ),
+          Container(
+            alignment: Alignment.bottomRight,
+            margin: const EdgeInsets.only(bottom: 90, right: 30),
+            child: SizedBox(
+              width: 150,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.end,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Button(
+                    child: Text("Arbeitsverzeichnis"),
+                    onPressed: () => ffmpeg.pwd(context),
+                  ),
+                  SizedBox(height: 20),
+                  Button(
+                    child: Text("Ordnerinhalt"),
+                    onPressed: () => ffmpeg.ls(context),
+                  ),
+                  SizedBox(height: 20),
+                  Button(
+                    child: Text("ffmpeg Version"),
+                    onPressed: () => ffmpeg.ffmpegVersion(context),
+                  ),
+                  SizedBox(height: 20),
+                  Button(
+                    child: Text("3 frame Video"),
+                    onPressed: () => ffmpeg.createVideo(
+                      context,
+                      framecount: 3,
+                      recursionLevel: 3,
+                    ),
+                  ),
+                  SizedBox(height: 20),
+                  Button(
+                    child: Text("10 frame Video"),
+                    onPressed: () => ffmpeg.createVideo(
+                      context,
+                      framecount: 10,
+                      recursionLevel: 10,
+                    ),
+                  ),
+                ],
+              ),
+            ),
           ),
           Container(
             alignment: Alignment.bottomRight,
