@@ -1,15 +1,25 @@
-import 'dart:developer';
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:process_run/shell.dart';
-
-import 'package:recursify/command/console_output_cubit.dart';
-import 'package:recursify/command/ffmpeg_api.dart';
+import 'package:window_manager/window_manager.dart';
 
 import 'command/console.dart';
+import 'command/console_output_cubit.dart';
+import 'command/ffmpeg_api.dart';
 import 'navigation/nav_cubit.dart';
+import 'navigation/nav_view.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await WindowManager.instance.ensureInitialized();
+  windowManager.waitUntilReadyToShow().then((_) async {
+    await windowManager.setTitleBarStyle(
+      TitleBarStyle.hidden,
+      windowButtonVisibility: true,
+    );
+    await windowManager.maximize();
+    await windowManager.setMinimumSize(const Size(755, 545));
+  });
+
   runApp(RecursifyApp());
 }
 
@@ -29,63 +39,8 @@ class RecursifyApp extends StatelessWidget {
           visualDensity: VisualDensity.comfortable,
           accentColor: Colors.orange,
         ),
+        debugShowCheckedModeBanner: false,
       ),
-    );
-  }
-}
-
-class NavView extends StatelessWidget {
-  const NavView({
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return BlocBuilder<NavCubit, int>(
-      builder: (context, index) {
-        return NavigationView(
-          appBar: NavigationAppBar(
-            title: Text('Nice App Title :)'),
-            actions: Row(
-              children: [
-                IconButton(
-                  icon: Icon(FluentIcons.close_pane),
-                  onPressed: () {},
-                ),
-              ],
-            ),
-            automaticallyImplyLeading: true,
-          ),
-          pane: NavigationPane(
-            selected: index,
-            onChanged: (i) => BlocProvider.of<NavCubit>(context).setIndex(i),
-            displayMode: PaneDisplayMode.auto,
-            items: [
-              PaneItem(
-                icon: Icon(FluentIcons.edit_photo),
-                title: const Text('Editor'),
-              ),
-              PaneItem(
-                icon: Icon(FluentIcons.export),
-                title: const Text('Exportieren'),
-              ),
-            ],
-          ),
-          content: NavigationBody.builder(
-            index: index,
-            itemBuilder: (context, index) {
-              switch (index) {
-                case 0:
-                  return AppBody();
-                default:
-                  return Center(
-                    child: Text("Fehler"),
-                  );
-              }
-            },
-          ),
-        );
-      },
     );
   }
 }
@@ -101,7 +56,7 @@ class AppBody extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         Expanded(
-          child: Console(),
+          child: Container(), //Console(),
         ),
         Expanded(
           child: Container(
