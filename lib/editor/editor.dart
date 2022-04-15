@@ -17,6 +17,8 @@ class Editor extends StatelessWidget {
             builder: (context, state) {
               return material.Stepper(
                 currentStep: state.index,
+                elevation: 0.0,
+                type: material.StepperType.horizontal,
                 onStepContinue: () =>
                     BlocProvider.of<EditorCubit>(context).nextStep(context),
                 onStepCancel: () =>
