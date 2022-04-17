@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -37,7 +39,9 @@ class RecursionSettings extends StatelessWidget {
             ),
             SizedBox(height: 20),
             InfoLabel(
-              label: "Länge des Videos: ${state.frameCount} Frames",
+              label: "Länge des Videos: " +
+                  (state.frameCount / state.frameRate).floor().toString() +
+                  " Sekunden (${state.frameCount} Frames)",
               child: Slider(
                 value: state.frameCount.toDouble(),
                 onChanged: (value) => BlocProvider.of<RecursionCubit>(context)

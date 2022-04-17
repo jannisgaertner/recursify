@@ -44,7 +44,10 @@ class ProcessingCubit extends Cubit<ProcessingState> {
         emit(ProcessingVideoExport());
         return;
       } else if (recFrameIndex is int) {
-      emit(ProcessingRecursiveFrames(recFrameIndex, settings.recursionDepth));
+        int depth = settings.recursionDepth >= ExportSettings.maxRecursionDepth
+            ? settings.frameCount
+            : settings.recursionDepth;
+        emit(ProcessingRecursiveFrames(recFrameIndex, depth));
       } else if (recFrameIndex is String) {
         filepath = recFrameIndex;
       }

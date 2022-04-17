@@ -3,7 +3,7 @@ import 'package:fluent_ui/fluent_ui.dart';
 class ExportSettings {
   // recursion
   static final int maxRecursionDepth = 100;
-  static final int maxFrameCount = 200;
+  static final int maxFrameCount = 25 * 60; // 1 min at 25 fps
   final int recursionDepth;
   final int frameCount;
   final int frameRate; // TODO

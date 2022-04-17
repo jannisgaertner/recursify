@@ -41,10 +41,13 @@ class RecursiveImageProcessor {
     // kick off recursion
     Image? baseImg = decodeImage(image.file!.readAsBytesSync());
     if (baseImg == null) {
-      log("Image is null"); // TODO
+      log("Image is null");
       return;
     }
-    log("starting recursive processing of depth ${settings.recursionDepth}");
+    int depth = settings.recursionDepth >= ExportSettings.maxRecursionDepth
+        ? settings.frameCount
+        : settings.recursionDepth;
+    log("starting recursive processing of depth $depth");
     yield* _imageRecursion(baseImg, baseImg, settings);
 
     // save as video
@@ -58,7 +61,10 @@ class RecursiveImageProcessor {
     Image topImg,
     ExportSettings state,
   ) async* {
-    if (++_frame > state.recursionDepth) return;
+    int depth = settings.recursionDepth >= ExportSettings.maxRecursionDepth
+        ? settings.frameCount
+        : settings.recursionDepth;
+    if (++_frame > depth) return;
 
     //Image copyInto(Image dst, Image src, {int dstX, int dstY, int srcX, int srcY, int srcW, int srcH, bool blend = true});
     //Copy an area of the src image into dst.
