@@ -1,11 +1,11 @@
 import 'dart:io';
 import 'dart:ui' as ui;
 
-class ImagePickerState {
+class ProcessableImageFile {
   final File? file;
   final ui.Size? size;
 
-  ImagePickerState(this.file, {this.size});
+  ProcessableImageFile(this.file, {this.size});
 
   double get aspectRatio {
     if (size == null) return 1;

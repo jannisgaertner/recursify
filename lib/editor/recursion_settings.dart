@@ -10,10 +10,10 @@ class RecursionSettings extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<RecursionCubit, RecursionState>(
+    return BlocBuilder<RecursionCubit, ExportSettings>(
       builder: (context, state) {
         String recursionDepthText =
-            state.recursionDepth == RecursionState.maxRecursionDepth
+            state.recursionDepth == ExportSettings.maxRecursionDepth
                 ? "unendlich"
                 : state.recursionDepth.toString() + " Ebenen";
         return Column(
@@ -30,8 +30,8 @@ class RecursionSettings extends StatelessWidget {
                 value: state.recursionDepth.toDouble(),
                 onChanged: (value) =>
                     BlocProvider.of<RecursionCubit>(context).setDepth(value),
-                divisions: RecursionState.maxRecursionDepth,
-                max: RecursionState.maxRecursionDepth.toDouble(),
+                divisions: ExportSettings.maxRecursionDepth,
+                max: ExportSettings.maxRecursionDepth.toDouble(),
                 min: 0,
               ),
             ),
@@ -42,8 +42,8 @@ class RecursionSettings extends StatelessWidget {
                 value: state.frameCount.toDouble(),
                 onChanged: (value) => BlocProvider.of<RecursionCubit>(context)
                     .setFrameCount(value),
-                divisions: RecursionState.maxFrameCount,
-                max: RecursionState.maxFrameCount.toDouble(),
+                divisions: ExportSettings.maxFrameCount,
+                max: ExportSettings.maxFrameCount.toDouble(),
                 min: 1,
               ),
             )

@@ -13,7 +13,7 @@ class AreaSelector extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<ImagePickerCubit, ImagePickerState>(
+    return BlocBuilder<ImagePickerCubit, ProcessableImageFile>(
       builder: (context, state) {
         if (state.size == null) {
           return Text("Größe des Bildes wird ermittelt...");
@@ -41,7 +41,7 @@ class AreaSelector extends StatelessWidget {
                       ),
                     ),
                   ),
-                  BlocBuilder<RecursionCubit, RecursionState>(
+                  BlocBuilder<RecursionCubit, ExportSettings>(
                     builder: (context, recursion) {
                       return Positioned(
                         left: constraints.maxWidth * recursion.relChildOffsetX,

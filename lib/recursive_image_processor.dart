@@ -4,64 +4,59 @@ import 'dart:io';
 import 'package:image/image.dart';
 
 import 'console/ffmpeg_api.dart';
-import 'editor/cubit/recursion_cubit.dart';
 import 'editor/cubit/recursion_state.dart';
-import 'editor/image_picker/image_picker_cubit.dart';
+import 'editor/image_picker/image_picker_state.dart';
 
 class RecursiveImageProcessor {
-  ImagePickerCubit? _imagePickerCubit;
-  RecursionCubit _recursionCubit;
-  FfmpegAPI _ffmpeg;
+  final FfmpegAPI ffmpeg;
+  final ExportSettings settings;
+  final ProcessableImageFile image;
 
   int _frame = 1;
   String? _outputPath;
 
   RecursiveImageProcessor(
-    this._imagePickerCubit,
-    this._recursionCubit,
-    this._ffmpeg,
-  );
-
-  set picker(ImagePickerCubit? value) {
-    _imagePickerCubit = value;
+    {
+    required this.ffmpeg,
+    required this.image,
+    required this.settings,
   }
+  ) : assert(image.hasPicked);
 
-  void start(RecursionState state) async {
-    if (_imagePickerCubit == null) {
-      log("ImagePickerCubit is null");
-      return;
-    }
 
-    if (_imagePickerCubit!.state.file == null) {
-      log("ImagePickerCubit.state.file is null");
-      return;
-    }
+  /// returns the current frame index as a Stream
+  /// processes only recurion affected frames
+  Stream<int?> start() async* {
+    assert(image.hasPicked);
+
+    yield 1;
 
     // save first frame
-    File imgFile = _imagePickerCubit!.state.file!;
     await _saveImageFromFile(
-      imgFile,
-      width: state.size.width.toInt(),
-      height: state.size.height.toInt(),
+      image.file!,
+      width: settings.size.width.toInt(),
+      height: settings.size.height.toInt(),
     );
 
     // kick off recursion
-    Image? baseImg = decodeImage(imgFile.readAsBytesSync());
+    Image? baseImg = decodeImage(image.file!.readAsBytesSync());
     if (baseImg == null) {
       log("Image is null"); // TODO
       return;
     }
-    log("starting recursive processing of depth ${state.recursionDepth}");
-    await _imageRecursion(baseImg, baseImg, state);
+    log("starting recursive processing of depth ${settings.recursionDepth}");
+    yield* _imageRecursion(baseImg, baseImg, settings);
 
     // save as video
     log("saving video");
-    await _saveVideo(state);
-    _recursionCubit.endProcessing();
+    await _saveVideo(settings);
   }
 
-  Future<void> _imageRecursion(
-      Image baseImg, Image topImg, RecursionState state) async {
+  Stream<int?> _imageRecursion(
+    Image baseImg,
+    Image topImg,
+    ExportSettings state,
+  ) async* {
     if (++_frame > state.recursionDepth) return;
 
     //Image copyInto(Image dst, Image src, {int dstX, int dstY, int srcX, int srcY, int srcW, int srcH, bool blend = true});
@@ -85,7 +80,8 @@ class RecursiveImageProcessor {
     if (res == null) return;
 
     log("recursion level $_frame successful");
-    await _imageRecursion(baseImg, resImg, state);
+    yield _frame;
+    yield* _imageRecursion(baseImg, resImg, state);
   }
 
   Future<File?> _saveImageFromFile(File img, {int? width, int? height}) async {
@@ -104,8 +100,8 @@ class RecursiveImageProcessor {
     return saved;
   }
 
-  Future<void> _saveVideo(RecursionState state) async {
-    _outputPath = await _ffmpeg.createVideo(
+  Future<void> _saveVideo(ExportSettings state) async {
+    _outputPath = await ffmpeg.createVideo(
       framecount: state.frameCount,
       recursionLevel: state.recursionDepth,
       framerate: state.frameRate,

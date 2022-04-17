@@ -8,8 +8,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'image_picker_state.dart';
 
-class ImagePickerCubit extends Cubit<ImagePickerState> {
-  ImagePickerCubit() : super(ImagePickerState(null));
+class ImagePickerCubit extends Cubit<ProcessableImageFile> {
+  ImagePickerCubit() : super(ProcessableImageFile(null));
 
   Future<File?> pickImage() async {
     final file = OpenFilePicker()
@@ -22,9 +22,9 @@ class ImagePickerCubit extends Cubit<ImagePickerState> {
     if (result != null) {
       log(result.path);
     }
-    emit(ImagePickerState(result));
+    emit(ProcessableImageFile(result));
     ui.Size? size = await determineSizing();
-    emit(ImagePickerState(result, size: size));
+    emit(ProcessableImageFile(result, size: size));
     return result;
   }
 
@@ -42,7 +42,7 @@ class ImagePickerCubit extends Cubit<ImagePickerState> {
     );
   }
 
-  void clear() => emit(ImagePickerState(null));
+  void clear() => emit(ProcessableImageFile(null));
 
   bool get isPicked => state.file != null;
 }

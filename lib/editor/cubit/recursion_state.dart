@@ -1,8 +1,6 @@
 import 'package:fluent_ui/fluent_ui.dart';
 
-class RecursionState {
-  final bool isProcessing;
-
+class ExportSettings {
   // recursion
   static final int maxRecursionDepth = 100;
   static final int maxFrameCount = 200;
@@ -18,8 +16,7 @@ class RecursionState {
   // resolution
   final Size size;
 
-  RecursionState({
-    this.isProcessing = false,
+  ExportSettings({
     this.recursionDepth = 0,
     this.frameCount = 25,
     this.frameRate = 25,
@@ -29,8 +26,7 @@ class RecursionState {
     this.size = const Size(1280, 720),
   }) : assert(relChildSize <= 1 && relChildSize >= 0);
 
-  RecursionState copyWith({
-    bool? isProcessing,
+  ExportSettings copyWith({
     int? recursionDepth,
     int? frameCount,
     int? frameRate,
@@ -39,8 +35,7 @@ class RecursionState {
     double? relChildOffsetY,
     Size? size,
   }) {
-    return RecursionState(
-      isProcessing: isProcessing ?? this.isProcessing,
+    return ExportSettings(
       recursionDepth: recursionDepth ?? this.recursionDepth,
       frameCount: frameCount ?? this.frameCount,
       frameRate: frameRate ?? this.frameRate,

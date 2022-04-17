@@ -4,11 +4,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../editor/cubit/editor_cubit.dart';
 import '../editor/cubit/recursion_cubit.dart';
-import '../editor/cubit/recursion_state.dart';
 import '../editor/image_editor/file_selection_warning.dart';
 import '../editor/image_picker/image_picker_cubit.dart';
 import '../editor/image_picker/image_picker_state.dart';
 import '../navigation/nav_cubit.dart';
+import 'processing_cubit.dart';
 
 class Export extends StatelessWidget {
   const Export({Key? key}) : super(key: key);
@@ -32,7 +32,7 @@ class Export extends StatelessWidget {
               style: FluentTheme.of(context).typography.body,
             ),
             SizedBox(height: 20),
-            BlocBuilder<ImagePickerCubit, ImagePickerState>(
+            BlocBuilder<ImagePickerCubit, ProcessableImageFile>(
               builder: (context, state) {
                 if (!state.hasPicked) return FileSelectionWarning();
 
@@ -58,36 +58,98 @@ class Export extends StatelessWidget {
               },
             ),
             SizedBox(height: 20),
-            BlocBuilder<ImagePickerCubit, ImagePickerState>(
+            BlocBuilder<ImagePickerCubit, ProcessableImageFile>(
               builder: (context, imagePickerState) {
-                return BlocBuilder<RecursionCubit, RecursionState>(
+                return BlocBuilder<ProcessingCubit, ProcessingState>(
                   builder: (context, state) {
-                    if (state.isProcessing) return ProgressBar();
+                    List<Widget> children = [];
+                    if (state is ProcessingInitial) {
+                      children = [
+                        FilledButton(
+                          child: Text("Exportieren starten"),
+                          onPressed: imagePickerState.hasPicked
+                              ? () => BlocProvider.of<ProcessingCubit>(context)
+                                  .start(context)
+                              : null,
+                        ),
+                        SizedBox(height: 20),
+                        TextButton(
+                          child: Text("Neu starten"),
+                          onPressed: () => _restart(context),
+                        ),
+                      ];
+                    } else if (state is ProcessingCurrently) {
+                      double? val =
+                          state.progress != null ? state.progress! * 100 : null;
+                      children = [
+                        ProgressBar(value: val),
+                        SizedBox(height: 10),
+                        Center(child: Text(state.label)),
+                      ];
+                    } else if (state is ProcessingError) {
+                      children = [
+                        InfoBar(
+                          title: Text("Ein Fehler ist aufgetreten!"),
+                          severity: InfoBarSeverity.error,
+                          content: Text(
+                            "Die Verarbeitung konnte nicht erfolgreich abgeschlossen werden." +
+                                "\nBitte überprüfe deine Einstellungen und versuche es erneut.",
+                          ),
+                          isLong: true,
+                          action: Button(
+                            child: Text("neu starten"),
+                            onPressed: () => _restart(context),
+                          ),
+                          onClose: null,
+                        ),
+                      ];
+                    } else if (state is ProcessingFinished) {
+                      children = [
+                        InfoBar(
+                          title: Text(state.success
+                              ? "Video erfolgreich exportiert!"
+                              : "Video konnte nicht exportiert werden!"),
+                          severity: state.success
+                              ? InfoBarSeverity.success
+                              : InfoBarSeverity.error,
+                          isLong: true,
+                          action: Row(
+                            children: [
+                              FilledButton(
+                                child: Text("Video ansehen"),
+                                onPressed: () =>
+                                    BlocProvider.of<NavCubit>(context).next(),
+                              ),
+                              SizedBox(width: 10),
+                              TextButton(
+                                child: Text("neu starten"),
+                                onPressed: () => _restart(context),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ];
+                    }
 
-                    return FilledButton(
-                      child: Text("Exportieren starten"),
-                      onPressed: imagePickerState.hasPicked
-                          ? () => BlocProvider.of<RecursionCubit>(context)
-                              .startProcessing()
-                          : null,
+                    return Column(
+                      children: children,
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
                     );
                   },
                 );
-              },
-            ),
-            SizedBox(height: 20),
-            TextButton(
-              child: Text("Neu starten"),
-              onPressed: () {
-                BlocProvider.of<ImagePickerCubit>(context).clear();
-                BlocProvider.of<RecursionCubit>(context).clear();
-                BlocProvider.of<EditorCubit>(context).clear();
-                BlocProvider.of<NavCubit>(context).previous();
               },
             ),
           ],
         ),
       ),
     );
+  }
+
+  void _restart(BuildContext context) {
+    BlocProvider.of<ImagePickerCubit>(context).clear();
+    BlocProvider.of<RecursionCubit>(context).clear();
+    BlocProvider.of<EditorCubit>(context).clear();
+    BlocProvider.of<NavCubit>(context).previous();
+    BlocProvider.of<ProcessingCubit>(context).clear();
   }
 }

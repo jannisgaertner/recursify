@@ -25,7 +25,7 @@ class ImagePicker extends StatelessWidget {
                 BlocProvider.of<ImagePickerCubit>(context).pickImage(),
           ),
           SizedBox(height: 20),
-          BlocBuilder<ImagePickerCubit, ImagePickerState>(
+          BlocBuilder<ImagePickerCubit, ProcessableImageFile>(
             builder: (context, state) {
               if (state.file == null) return Text("Keine Datei ausgewählt");
               return Row(

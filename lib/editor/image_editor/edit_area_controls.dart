@@ -11,7 +11,7 @@ class EditAreaControls extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<RecursionCubit, RecursionState>(
+    return BlocBuilder<RecursionCubit, ExportSettings>(
       builder: (context, state) {
         return Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,

@@ -14,7 +14,7 @@ class ImageEditor extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<ImagePickerCubit, ImagePickerState>(
+    return BlocBuilder<ImagePickerCubit, ProcessableImageFile>(
       builder: (context, state) {
         if (!state.hasPicked) return FileSelectionWarning();
         return Column(

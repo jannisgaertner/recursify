@@ -3,9 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:window_manager/window_manager.dart';
 
 import '../console/console.dart';
-import '../editor/cubit/recursion_cubit.dart';
 import '../editor/editor.dart';
-import '../editor/image_picker/image_picker_cubit.dart';
 import '../export/export.dart';
 import '../main.dart';
 import 'nav_cubit.dart';
@@ -17,8 +15,6 @@ class NavView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    BlocProvider.of<RecursionCubit>(context).picker =
-        BlocProvider.of<ImagePickerCubit>(context);
     return BlocBuilder<NavCubit, int>(
       builder: (context, index) {
         return NavigationView(

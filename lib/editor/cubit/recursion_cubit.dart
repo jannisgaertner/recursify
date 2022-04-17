@@ -1,38 +1,13 @@
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:recursify/console/ffmpeg_api.dart';
 
-import '../../recursive_image_processor.dart';
 import '../image_picker/image_picker_cubit.dart';
 import 'recursion_state.dart';
 
-class RecursionCubit extends Cubit<RecursionState> {
-  late final RecursiveImageProcessor _processor;
-  ImagePickerCubit? _imagePickerCubit;
+class RecursionCubit extends Cubit<ExportSettings> {
 
   RecursionCubit(
-    ImagePickerCubit? imagePickerCubit,
-    FfmpegAPI ffmpegAPI,
-  ) : super(RecursionState()) {
-    if (imagePickerCubit != null) _imagePickerCubit = imagePickerCubit;
-    _processor = RecursiveImageProcessor(_imagePickerCubit, this, ffmpegAPI);
-  }
-
-  ImagePickerCubit? get picker => _imagePickerCubit;
-
-  set picker(ImagePickerCubit? value) {
-    _imagePickerCubit = value;
-    _processor.picker = value;
-  }
-
-  void startProcessing() {
-    _processor.start(state);
-    emit(state.copyWith(isProcessing: true));
-  }
-
-  void endProcessing() {
-    emit(state.copyWith(isProcessing: false));
-  }
+  ) : super(ExportSettings());
 
   void setDepth(double value) {
     emit(state.copyWith(recursionDepth: value.toInt()));
@@ -56,7 +31,7 @@ class RecursionCubit extends Cubit<RecursionState> {
         return BlocProvider.of<ImagePickerCubit>(context).state.file?.path ??
             "unbekannt";
       case "Tiefe der Rekursion":
-        return state.recursionDepth == RecursionState.maxRecursionDepth
+        return state.recursionDepth == ExportSettings.maxRecursionDepth
             ? "unendlich"
             : state.recursionDepth.toString() + " Ebenen";
       case "Länge des Videos":
@@ -74,8 +49,7 @@ class RecursionCubit extends Cubit<RecursionState> {
   }
 
   void clear() {
-    this._processor.reset();
-    emit(RecursionState());
+    emit(ExportSettings());
   }
 
   setRelChildSize(double value) => emit(state.copyWith(relChildSize: value));
