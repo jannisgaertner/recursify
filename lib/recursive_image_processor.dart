@@ -11,10 +11,16 @@ import 'editor/image_picker/image_picker_cubit.dart';
 class RecursiveImageProcessor {
   ImagePickerCubit? _imagePickerCubit;
   RecursionCubit _recursionCubit;
+  FfmpegAPI _ffmpeg;
+
   int _frame = 1;
   String? _outputPath;
 
-  RecursiveImageProcessor(this._imagePickerCubit, this._recursionCubit);
+  RecursiveImageProcessor(
+    this._imagePickerCubit,
+    this._recursionCubit,
+    this._ffmpeg,
+  );
 
   set picker(ImagePickerCubit? value) {
     _imagePickerCubit = value;
@@ -99,8 +105,7 @@ class RecursiveImageProcessor {
   }
 
   Future<void> _saveVideo(RecursionState state) async {
-    FfmpegAPI ffmpeg = FfmpegAPI();
-    _outputPath = await ffmpeg.createVideo(
+    _outputPath = await _ffmpeg.createVideo(
       framecount: state.frameCount,
       recursionLevel: state.recursionDepth,
       framerate: state.frameRate,

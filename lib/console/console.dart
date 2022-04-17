@@ -14,8 +14,6 @@ class Console extends StatelessWidget {
   final FfmpegAPI ffmpeg;
   final ScrollController _scrollController = ScrollController();
 
-  
-
   @override
   Widget build(BuildContext context) {
 

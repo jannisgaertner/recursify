@@ -1,5 +1,6 @@
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:recursify/console/ffmpeg_api.dart';
 
 import '../../recursive_image_processor.dart';
 import '../image_picker/image_picker_cubit.dart';
@@ -9,9 +10,12 @@ class RecursionCubit extends Cubit<RecursionState> {
   late final RecursiveImageProcessor _processor;
   ImagePickerCubit? _imagePickerCubit;
 
-  RecursionCubit(ImagePickerCubit? imagePickerCubit) : super(RecursionState()) {
+  RecursionCubit(
+    ImagePickerCubit? imagePickerCubit,
+    FfmpegAPI ffmpegAPI,
+  ) : super(RecursionState()) {
     if (imagePickerCubit != null) _imagePickerCubit = imagePickerCubit;
-    _processor = RecursiveImageProcessor(_imagePickerCubit, this);
+    _processor = RecursiveImageProcessor(_imagePickerCubit, this, ffmpegAPI);
   }
 
   ImagePickerCubit? get picker => _imagePickerCubit;

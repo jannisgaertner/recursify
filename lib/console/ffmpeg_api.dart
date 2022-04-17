@@ -88,19 +88,18 @@ cd "%~dp0export"
     return res.errText.isEmpty;
   }
 
-  Future<bool> hasFfmpeg({BuildContext? context}) {
-    return runShell(
-      'if not exist "%~dp0ffmpeg" (echo "false") else (echo "true")',
-      context: context,
-    );
+  Future<bool> hasFfmpeg({BuildContext? context}) async {
+    bool hasVersion = await ffmpegVersion();
+    _printToConsole(hasVersion.toString(), context: context);
+    return hasVersion;
   }
 
   Future<bool> runFfmpeg(String command, {BuildContext? context}) async {
     return await this.runShell(ffmpeg + " " + command, context: context);
   }
 
-  Future<void> ffmpegVersion({BuildContext? context}) async {
-    await this.runFfmpeg("-version -verbose", context: context);
+  Future<bool> ffmpegVersion({BuildContext? context}) async {
+    return await this.runFfmpeg("-version -verbose", context: context);
   }
 
   Future<void> pwd({BuildContext? context}) async {
