@@ -59,4 +59,8 @@ class RecursionCubit extends Cubit<ExportSettings> {
 
   setRelChildOffsetX(double value) =>
       emit(state.copyWith(relChildOffsetX: value));
+
+  void setResolution(Size size) {
+    emit(state.copyWith(size: size));
+  }
 }
