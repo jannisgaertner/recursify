@@ -1,7 +1,7 @@
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:recursify/editor/image_picker/image_picker.dart';
 
+import 'image_picker/image_picker.dart';
 import 'recursion_cubit.dart';
 
 class RecursionSettings extends StatelessWidget {

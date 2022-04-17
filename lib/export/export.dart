@@ -1,10 +1,10 @@
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter/material.dart' as material;
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:recursify/editor/editor_cubit.dart';
-import 'package:recursify/editor/image_picker/image_picker_cubit.dart';
-import 'package:recursify/editor/recursion_cubit.dart';
 
+import '../editor/editor_cubit.dart';
+import '../editor/image_picker/image_picker_cubit.dart';
+import '../editor/recursion_cubit.dart';
 import '../navigation/nav_cubit.dart';
 
 class Export extends StatelessWidget {
