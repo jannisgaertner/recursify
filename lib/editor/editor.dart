@@ -11,11 +11,13 @@ class Editor extends StatelessWidget {
   Widget build(BuildContext context) {
     return Center(
       child: material.Material(
-        child: Container(
+        child: Container(          
+          padding: const EdgeInsets.symmetric(horizontal: 10),
           constraints: BoxConstraints(maxWidth: 1000),
           child: BlocBuilder<EditorCubit, EditorStep>(
             builder: (context, state) {
               return material.Stepper(
+                margin: EdgeInsets.zero,
                 currentStep: state.index,
                 elevation: 0.0,
                 type: material.StepperType.horizontal,

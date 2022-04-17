@@ -70,6 +70,7 @@ cd "%~dp0export"
         _printToConsole(
           'Neuer Prozess mit PID ${process.pid.toString()}',
           context: context,
+          type: OutputType.info,
         );
         process.exitCode.asStream().listen((event) async {
           await Future.delayed(Duration(milliseconds: 100));
@@ -84,6 +85,13 @@ cd "%~dp0export"
     _printToConsole(res.outText, context: context);
     _printToConsole(res.errText, type: OutputType.error, context: context);
     return res.errText.isEmpty;
+  }
+
+  Future<bool> hasFfmpeg({BuildContext? context}) {
+    return runShell(
+      'if not exist "%~dp0ffmpeg" (echo "false") else (echo "true")',
+      context: context,
+    );
   }
 
   Future<bool> runFfmpeg(String command, {BuildContext? context}) async {

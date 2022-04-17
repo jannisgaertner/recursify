@@ -56,4 +56,6 @@ class ImagePickerState {
     if (size == null) return 1;
     return (size?.width ?? 1) / (size?.height ?? 1);
   }
+
+  bool get hasPicked => file != null;
 }

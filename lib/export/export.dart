@@ -1,6 +1,7 @@
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter/material.dart' as material;
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:recursify/editor/image_editor/image_editor.dart';
 
 import '../editor/editor_cubit.dart';
 import '../editor/image_picker/image_picker_cubit.dart';
@@ -14,6 +15,7 @@ class Export extends StatelessWidget {
   Widget build(BuildContext context) {
     return Center(
       child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 10),
         constraints: BoxConstraints(maxWidth: 1000),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -28,34 +30,46 @@ class Export extends StatelessWidget {
               style: FluentTheme.of(context).typography.body,
             ),
             SizedBox(height: 20),
-            material.DataTable(
-              columns: [
-                material.DataColumn(label: Text("Einstellung")),
-                material.DataColumn(label: Text("Wert")),
-              ],
-              rows: RecursionCubit.titles
-                  .map(
-                    (e) => material.DataRow(
-                      cells: [
-                        material.DataCell(Text(e)),
-                        material.DataCell(
-                          Text(BlocProvider.of<RecursionCubit>(context)
-                              .getValue(e, context)),
+            BlocBuilder<ImagePickerCubit, ImagePickerState>(
+              builder: (context, state) {
+                if (!state.hasPicked) return FileSelectionWarning();
+
+                return material.DataTable(
+                  columns: [
+                    material.DataColumn(label: Text("Einstellung")),
+                    material.DataColumn(label: Text("Wert")),
+                  ],
+                  rows: RecursionCubit.titles
+                      .map(
+                        (e) => material.DataRow(
+                          cells: [
+                            material.DataCell(Text(e)),
+                            material.DataCell(
+                              Text(BlocProvider.of<RecursionCubit>(context)
+                                  .getValue(e, context)),
+                            ),
+                          ],
                         ),
-                      ],
-                    ),
-                  )
-                  .toList(),
+                      )
+                      .toList(),
+                );
+              },
             ),
             SizedBox(height: 20),
-            BlocBuilder<RecursionCubit, RecursionState>(
-              builder: (context, state) {
-                if (state.isProcessing) return ProgressBar();
+            BlocBuilder<ImagePickerCubit, ImagePickerState>(
+              builder: (context, imagePickerState) {
+                return BlocBuilder<RecursionCubit, RecursionState>(
+                  builder: (context, state) {
+                    if (state.isProcessing) return ProgressBar();
 
-                return FilledButton(
-                  child: Text("Exportieren starten"),
-                  onPressed: () => BlocProvider.of<RecursionCubit>(context)
-                      .startProcessing(),
+                    return FilledButton(
+                      child: Text("Exportieren starten"),
+                      onPressed: imagePickerState.hasPicked
+                          ? () => BlocProvider.of<RecursionCubit>(context)
+                              .startProcessing()
+                          : null,
+                    );
+                  },
                 );
               },
             ),

@@ -12,14 +12,7 @@ class ImageEditor extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<ImagePickerCubit, ImagePickerState>(
       builder: (context, state) {
-        if (state.file == null)
-          return InfoBar(
-            title: Text("Keine Datei ausgewählt"),
-            content: Text(
-              'Wähle im ersten Schritt zuerst eine gültige Datei aus, um hier fortfahren zu können.',
-            ),
-            severity: InfoBarSeverity.info,
-          );
+        if (!state.hasPicked) return FileSelectionWarning();
         return Column(
           mainAxisSize: MainAxisSize.min,
           mainAxisAlignment: MainAxisAlignment.start,
@@ -44,6 +37,23 @@ class ImageEditor extends StatelessWidget {
           ],
         );
       },
+    );
+  }
+}
+
+class FileSelectionWarning extends StatelessWidget {
+  const FileSelectionWarning({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return InfoBar(
+      title: Text("Keine Datei ausgewählt"),
+      content: Text(
+        'Wähle im ersten Schritt zuerst eine gültige Datei aus, um hier fortfahren zu können.',
+      ),
+      severity: InfoBarSeverity.info,
     );
   }
 }

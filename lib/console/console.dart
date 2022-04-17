@@ -13,8 +13,23 @@ class Console extends StatelessWidget {
   final FfmpegAPI ffmpeg;
   final ScrollController _scrollController = ScrollController();
 
+  
+
   @override
   Widget build(BuildContext context) {
+
+    Map<String, Function()> _buttons = {
+      'FFMPEG vorhanden': () => ffmpeg.hasFfmpeg(context: context),
+      'FFMPEG Version': () => ffmpeg.ffmpegVersion(context: context),
+      'Arbeitsverzeichnis': () => ffmpeg.pwd(context: context),
+      'Ordnerinhalt': () => ffmpeg.ls(context: context),
+      'Video erstellen': () => ffmpeg.createVideo(
+            context: context,
+            framecount: 10,
+            recursionLevel: 10,
+          ),
+    };
+
     return Container(
       color: FluentTheme.of(context).acrylicBackgroundColor,
       child: Stack(
@@ -34,47 +49,19 @@ class Console extends StatelessWidget {
           ),
           Container(
             alignment: Alignment.bottomRight,
-            margin: const EdgeInsets.only(bottom: 90, right: 30),
+            margin: const EdgeInsets.only(bottom: 60, right: 30),
             child: SizedBox(
               width: 150,
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 mainAxisAlignment: MainAxisAlignment.end,
                 crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  Button(
-                    child: Text("Arbeitsverzeichnis"),
-                    onPressed: () => ffmpeg.pwd(context: context),
-                  ),
-                  SizedBox(height: 20),
-                  Button(
-                    child: Text("Ordnerinhalt"),
-                    onPressed: () => ffmpeg.ls(context: context),
-                  ),
-                  SizedBox(height: 20),
-                  Button(
-                    child: Text("ffmpeg Version"),
-                    onPressed: () => ffmpeg.ffmpegVersion(context: context),
-                  ),
-                  SizedBox(height: 20),
-                  Button(
-                    child: Text("3 frame Video"),
-                    onPressed: () => ffmpeg.createVideo(
-                      context: context,
-                      framecount: 3,
-                      recursionLevel: 3,
-                    ),
-                  ),
-                  SizedBox(height: 20),
-                  Button(
-                    child: Text("10 frame Video"),
-                    onPressed: () => ffmpeg.createVideo(
-                      context: context,
-                      framecount: 10,
-                      recursionLevel: 10,
-                    ),
-                  ),
-                ],
+                children: _buttons.keys.map((key) {
+                  return Container(
+                    child: Button(child: Text(key), onPressed: _buttons[key]),
+                    margin: const EdgeInsets.only(bottom: 10),
+                  );
+                }).toList(),
               ),
             ),
           ),
