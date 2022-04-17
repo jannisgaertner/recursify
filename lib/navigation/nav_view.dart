@@ -6,6 +6,7 @@ import '../console/console.dart';
 import '../editor/editor.dart';
 import '../export/export.dart';
 import '../main.dart';
+import '../viewer/viewer.dart';
 import 'nav_cubit.dart';
 
 class NavView extends StatelessWidget {
@@ -62,6 +63,10 @@ class NavView extends StatelessWidget {
                 title: const Text('Exportieren'),
               ),
               PaneItem(
+                icon: Icon(FluentIcons.play),
+                title: const Text('Ansehen'),
+              ),
+              PaneItem(
                 icon: Icon(FluentIcons.code),
                 title: const Text('Konsole'),
               ),
@@ -72,6 +77,7 @@ class NavView extends StatelessWidget {
             children: [
               Editor(),
               Export(),
+              Viewer(),
               Console(),
             ],
           ),

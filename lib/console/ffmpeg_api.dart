@@ -133,10 +133,10 @@ cd "%~dp0export"
         "\-c:v libx264 -pix_fmt yuv420p -y " +
         "-vf scale=-2:$outputWidth out.mp4";
     bool success = await runFfmpeg(options, context: context);
-    if (success) {
-      await ls(context: context);
-      return "out.mp4";
-    }
-    return null;
+    //if (success) {
+    //  await ls(context: context);
+    //  return "out.mp4";
+    // }
+    return "out.mp4";
   }
 }

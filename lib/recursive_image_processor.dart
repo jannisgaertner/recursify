@@ -26,7 +26,7 @@ class RecursiveImageProcessor {
 
   /// returns the current frame index as a Stream
   /// processes only recurion affected frames
-  Stream<int?> start() async* {
+  Stream<dynamic> start() async* {
     assert(image.hasPicked);
 
     yield 1;
@@ -49,7 +49,8 @@ class RecursiveImageProcessor {
 
     // save as video
     log("saving video");
-    await _saveVideo(settings);
+    String? path = await _saveVideo(settings);
+    if (path != null) yield path;
   }
 
   Stream<int?> _imageRecursion(
@@ -100,13 +101,14 @@ class RecursiveImageProcessor {
     return saved;
   }
 
-  Future<void> _saveVideo(ExportSettings state) async {
+  Future<String?> _saveVideo(ExportSettings state) async {
     _outputPath = await ffmpeg.createVideo(
       framecount: state.frameCount,
       recursionLevel: state.recursionDepth,
       framerate: state.frameRate,
       outputWidth: state.size.width.toInt(),
     );
+    return _outputPath;
   }
 
   static String paddedInt(int value) {

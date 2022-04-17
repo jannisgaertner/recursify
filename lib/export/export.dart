@@ -118,7 +118,8 @@ class Export extends StatelessWidget {
                               FilledButton(
                                 child: Text("Video ansehen"),
                                 onPressed: () =>
-                                    BlocProvider.of<NavCubit>(context).next(),
+                                    BlocProvider.of<ProcessingCubit>(context)
+                                        .openVideo(),
                               ),
                               SizedBox(width: 10),
                               TextButton(

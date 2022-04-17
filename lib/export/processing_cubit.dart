@@ -1,5 +1,9 @@
+import 'dart:developer';
+import 'dart:io';
+
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../console/ffmpeg_api.dart';
 import '../editor/cubit/recursion_cubit.dart';
@@ -32,18 +36,24 @@ class ProcessingCubit extends Cubit<ProcessingState> {
       settings: settings,
       ffmpeg: _ffmpeg,
     );
-    _processor!.start().listen((int? recFrameIndex) {
+
+    String filepath = "";
+    _processor!.start().listen((dynamic recFrameIndex) {
+      log("Processor update: $recFrameIndex");
       if (recFrameIndex == null) {
         emit(ProcessingVideoExport());
         return;
-      }
+      } else if (recFrameIndex is int) {
       emit(ProcessingRecursiveFrames(recFrameIndex, settings.recursionDepth));
+      } else if (recFrameIndex is String) {
+        filepath = recFrameIndex;
+      }
     })
       ..onError((Object error) {
         emit(ProcessingError(errorMessage: error.toString()));
       })
       ..onDone(() {
-        emit(ProcessingFinished(success: true));
+        emit(ProcessingFinished(success: true, filePath: filepath));
       });
   }
 
@@ -53,6 +63,27 @@ class ProcessingCubit extends Cubit<ProcessingState> {
 
   void clear() {
     emit(ProcessingInitial());
+  }
+
+  void openVideo() async {
+    if (this.state is ProcessingFinished) {
+      String? path = (this.state as ProcessingFinished).filePath;
+      if (path == null) {
+        log("Pfad nicht vorhanden");
+        return;
+      }
+      final Uri uri = Uri.file(path);
+
+      if (await File(uri.toFilePath()).exists()) {
+        if (!await launch(uri.toString())) {
+          throw 'Could not launch $uri';
+        }
+      } else {
+        log("File does not exist");
+      }
+    } else {
+      log("current status is not 'ProcessingFinished': ${this.state}");
+    }
   }
 }
 
@@ -90,8 +121,9 @@ class ProcessingVideoExport extends ProcessingCurrently {
 
 class ProcessingFinished extends ProcessingState {
   bool success;
+  String? filePath;
 
-  ProcessingFinished({this.success = false});
+  ProcessingFinished({this.success = false, this.filePath});
 }
 
 class ProcessingError extends ProcessingState {
