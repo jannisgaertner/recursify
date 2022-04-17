@@ -1,7 +1,7 @@
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:recursify/editor/cubit/recursion_cubit.dart';
-import 'package:recursify/editor/cubit/recursion_state.dart';
+import '../cubit/recursion_cubit.dart';
+import '../cubit/recursion_state.dart';
 
 import 'image_picker_cubit.dart';
 import 'image_picker_state.dart';

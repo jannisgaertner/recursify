@@ -1,12 +1,8 @@
-import 'dart:io';
-
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 import '../editor/image_picker/step_title.dart';
 import '../export/processing_cubit.dart';
-import 'video_viewer.dart';
 
 class Viewer extends StatelessWidget {
   const Viewer({Key? key}) : super(key: key);

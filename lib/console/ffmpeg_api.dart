@@ -132,7 +132,8 @@ cd "%~dp0export"
     String options = "-framerate $framerate -i 'concat:$imgFiles' " +
         "\-c:v libx264 -pix_fmt yuv420p -y " +
         "-vf scale=-2:$outputWidth out.mp4";
-    bool success = await runFfmpeg(options, context: context);
+    //bool success =
+    await runFfmpeg(options, context: context);
     //if (success) {
     //  await ls(context: context);
     //  return "out.mp4";

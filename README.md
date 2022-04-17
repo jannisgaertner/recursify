@@ -1,16 +1,13 @@
 # recursify
 
-A new Flutter project.
+Flutter Windows Application to create videos consisting of recursively generated frames.
 
-## Getting Started
+## Setup
 
-This project is a starting point for a Flutter application.
+To use the application, the [FFMPEG CLI](https://ffmpeg.org/download.html#build-windows) for Windows must be installed.
 
-A few resources to get you started if this is your first Flutter project:
+## Usage
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+Open the app, choose an image from your file system, follow through the three steps in the 'Editor'-tab, press the export button on the export page and wait for the video render to finish.
+Will export png files of every recursive frame and use that to generate the next frame. After all frames are rendered, the video will be saved to your file system as an mp4 file using ffmpegs command line interface (windows only).
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
