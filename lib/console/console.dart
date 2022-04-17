@@ -44,23 +44,23 @@ class Console extends StatelessWidget {
                 children: [
                   Button(
                     child: Text("Arbeitsverzeichnis"),
-                    onPressed: () => ffmpeg.pwd(context),
+                    onPressed: () => ffmpeg.pwd(context: context),
                   ),
                   SizedBox(height: 20),
                   Button(
                     child: Text("Ordnerinhalt"),
-                    onPressed: () => ffmpeg.ls(context),
+                    onPressed: () => ffmpeg.ls(context: context),
                   ),
                   SizedBox(height: 20),
                   Button(
                     child: Text("ffmpeg Version"),
-                    onPressed: () => ffmpeg.ffmpegVersion(context),
+                    onPressed: () => ffmpeg.ffmpegVersion(context: context),
                   ),
                   SizedBox(height: 20),
                   Button(
                     child: Text("3 frame Video"),
                     onPressed: () => ffmpeg.createVideo(
-                      context,
+                      context: context,
                       framecount: 3,
                       recursionLevel: 3,
                     ),
@@ -69,7 +69,7 @@ class Console extends StatelessWidget {
                   Button(
                     child: Text("10 frame Video"),
                     onPressed: () => ffmpeg.createVideo(
-                      context,
+                      context: context,
                       framecount: 10,
                       recursionLevel: 10,
                     ),

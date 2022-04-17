@@ -3,7 +3,7 @@ import 'dart:io';
 
 import 'package:image/image.dart';
 
-import 'command/ffmpeg_api.dart';
+import 'console/ffmpeg_api.dart';
 import 'editor/image_picker/image_picker_cubit.dart';
 import 'editor/recursion_cubit.dart';
 
@@ -100,7 +100,6 @@ class RecursiveImageProcessor {
   Future<void> _saveVideo(RecursionState state) async {
     FfmpegAPI ffmpeg = FfmpegAPI();
     _outputPath = await ffmpeg.createVideo(
-      null,
       framecount: state.frameCount,
       recursionLevel: state.recursionDepth,
       framerate: state.frameRate,

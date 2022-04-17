@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:recursify/editor/recursion_cubit.dart';
 import 'package:window_manager/window_manager.dart';
 
-import '../command/console.dart';
+import '../console/console.dart';
 import '../editor/editor.dart';
 import '../editor/image_picker/image_picker_cubit.dart';
 import '../export/export.dart';
