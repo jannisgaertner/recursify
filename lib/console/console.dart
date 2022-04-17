@@ -2,6 +2,7 @@ import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'console_output_cubit.dart';
+import 'console_state.dart';
 import 'ffmpeg_api.dart';
 
 class Console extends StatelessWidget {

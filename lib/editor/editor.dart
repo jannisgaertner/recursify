@@ -2,7 +2,8 @@ import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter/material.dart' as material;
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'editor_cubit.dart';
+import 'cubit/editor_cubit.dart';
+import 'cubit/editor_step.dart';
 
 class Editor extends StatelessWidget {
   const Editor({Key? key}) : super(key: key);

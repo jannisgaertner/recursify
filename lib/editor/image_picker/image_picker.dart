@@ -2,6 +2,8 @@ import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'image_picker_cubit.dart';
+import 'image_picker_state.dart';
+import 'step_title.dart';
 
 class ImagePicker extends StatelessWidget {
   const ImagePicker({Key? key}) : super(key: key);
@@ -40,36 +42,6 @@ class ImagePicker extends StatelessWidget {
           )
         ],
       ),
-    );
-  }
-}
-
-class StepTitle extends StatelessWidget {
-  const StepTitle({
-    Key? key,
-    required this.title,
-    this.subtitle,
-  }) : super(key: key);
-
-  final String title;
-  final String? subtitle;
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        Text(
-          title,
-          style: FluentTheme.of(context).typography.title,
-        ),
-        if (subtitle != null)
-          Text(
-            subtitle!,
-            style: FluentTheme.of(context).typography.body,
-          ),
-        SizedBox(height: 20),
-      ],
     );
   }
 }

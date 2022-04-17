@@ -2,11 +2,12 @@ import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter/material.dart' as material;
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../navigation/nav_cubit.dart';
-import 'image_editor/image_editor.dart';
-import 'image_picker/image_picker.dart';
-import 'image_picker/image_picker_cubit.dart';
-import 'recursion_settings.dart';
+import '../../navigation/nav_cubit.dart';
+import '../image_editor/image_editor.dart';
+import '../image_picker/image_picker.dart';
+import '../image_picker/image_picker_cubit.dart';
+import '../recursion_settings.dart';
+import 'editor_step.dart';
 
 class EditorCubit extends Cubit<EditorStep> {
   EditorCubit() : super(EditorStep.first());
@@ -57,12 +58,4 @@ class EditorCubit extends Cubit<EditorStep> {
   void clear() {
     emit(EditorStep(0));
   }
-}
-
-class EditorStep {
-  final int index;
-
-  EditorStep(this.index);
-
-  EditorStep.first() : index = 0;
 }

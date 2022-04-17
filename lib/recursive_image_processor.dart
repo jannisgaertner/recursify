@@ -4,8 +4,9 @@ import 'dart:io';
 import 'package:image/image.dart';
 
 import 'console/ffmpeg_api.dart';
+import 'editor/cubit/recursion_cubit.dart';
+import 'editor/cubit/recursion_state.dart';
 import 'editor/image_picker/image_picker_cubit.dart';
-import 'editor/recursion_cubit.dart';
 
 class RecursiveImageProcessor {
   ImagePickerCubit? _imagePickerCubit;

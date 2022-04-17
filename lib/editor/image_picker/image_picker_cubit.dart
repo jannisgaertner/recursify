@@ -1,11 +1,12 @@
 import 'dart:developer';
 import 'dart:io';
-
 import 'dart:ui' as ui;
 
 import 'package:filepicker_windows/filepicker_windows.dart';
 import 'package:fluent_ui/fluent_ui.dart' as fluent;
 import 'package:flutter_bloc/flutter_bloc.dart';
+
+import 'image_picker_state.dart';
 
 class ImagePickerCubit extends Cubit<ImagePickerState> {
   ImagePickerCubit() : super(ImagePickerState(null));
@@ -44,18 +45,4 @@ class ImagePickerCubit extends Cubit<ImagePickerState> {
   void clear() => emit(ImagePickerState(null));
 
   bool get isPicked => state.file != null;
-}
-
-class ImagePickerState {
-  final File? file;
-  final ui.Size? size;
-
-  ImagePickerState(this.file, {this.size});
-
-  double get aspectRatio {
-    if (size == null) return 1;
-    return (size?.width ?? 1) / (size?.height ?? 1);
-  }
-
-  bool get hasPicked => file != null;
 }

@@ -7,6 +7,7 @@ import 'package:process_run/shell.dart';
 
 import '../recursive_image_processor.dart';
 import 'console_output_cubit.dart';
+import 'output_type.dart';
 
 class FfmpegAPI {
   late final Shell shell;

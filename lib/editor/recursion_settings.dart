@@ -1,8 +1,9 @@
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'image_picker/image_picker.dart';
-import 'recursion_cubit.dart';
+import 'cubit/recursion_cubit.dart';
+import 'cubit/recursion_state.dart';
+import 'image_picker/step_title.dart';
 
 class RecursionSettings extends StatelessWidget {
   const RecursionSettings({Key? key}) : super(key: key);

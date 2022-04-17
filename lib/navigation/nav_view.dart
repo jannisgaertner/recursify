@@ -1,9 +1,9 @@
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:recursify/editor/recursion_cubit.dart';
 import 'package:window_manager/window_manager.dart';
 
 import '../console/console.dart';
+import '../editor/cubit/recursion_cubit.dart';
 import '../editor/editor.dart';
 import '../editor/image_picker/image_picker_cubit.dart';
 import '../export/export.dart';

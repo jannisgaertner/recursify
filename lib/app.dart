@@ -3,9 +3,9 @@ import 'package:flutter/material.dart' as material;
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'console/console_output_cubit.dart';
-import 'editor/editor_cubit.dart';
+import 'editor/cubit/editor_cubit.dart';
+import 'editor/cubit/recursion_cubit.dart';
 import 'editor/image_picker/image_picker_cubit.dart';
-import 'editor/recursion_cubit.dart';
 import 'main.dart';
 import 'navigation/nav_cubit.dart';
 import 'navigation/nav_view.dart';
